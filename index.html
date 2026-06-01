@@ -41,6 +41,7 @@
       font-size:.8rem;font-weight:800;color:var(--ink);letter-spacing:.2px;
     }
     .topbar a{color:var(--red);text-decoration:underline;font-weight:900}
+    @media(max-width:640px){.topbar{padding:6px 16px}.topbar p{font-size:.72rem}}
 
     /* ─── HEADER ─── */
     header{
@@ -180,34 +181,6 @@
       border-radius:4px 4px 0 0;
     }
     .hero-brick::before{left:8px}.hero-brick::after{right:8px}
-
-    /* ─── APPT STRIP ─── */
-    .appt-strip{
-      background:var(--blue);
-      padding:18px 28px;
-    }
-    .appt-inner{
-      max-width:1360px;margin:0 auto;
-      display:flex;align-items:center;justify-content:space-between;
-      gap:16px;flex-wrap:wrap;
-    }
-    .appt-left{display:flex;align-items:center;gap:14px}
-    .appt-icon{
-      width:44px;height:44px;background:rgba(255,255,255,.15);
-      border-radius:12px;display:flex;align-items:center;justify-content:center;
-      font-size:1.3rem;flex-shrink:0;
-    }
-    .appt-text .t1{font-size:.95rem;font-weight:800;color:#fff}
-    .appt-text .t2{font-size:.78rem;font-weight:600;color:rgba(255,255,255,.65);margin-top:1px}
-    .btn-yellow{
-      display:inline-flex;align-items:center;gap:8px;
-      background:var(--yellow);color:var(--ink);
-      font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:800;
-      padding:11px 24px;border-radius:50px;text-decoration:none;
-      box-shadow:0 3px 0 var(--yellow-dk);white-space:nowrap;
-      transition:transform .15s,box-shadow .15s;
-    }
-    .btn-yellow:hover{transform:translateY(-2px);box-shadow:0 5px 0 var(--yellow-dk)}
 
     /* ─── ABOUT ─── */
     .about{background:var(--off-white);border-bottom:2px solid var(--border)}
@@ -527,7 +500,6 @@
       .header-mid{max-width:none}
       .topbar{display:none}
       .hero{padding:40px 16px 44px}
-      .appt-strip{padding:14px 16px}
       .about-inner{padding:20px 16px}
       .controls-wrap{padding:24px 16px 0}
       .grid-wrap{padding:20px 16px 56px}
@@ -604,22 +576,6 @@
     </div>
   </div>
 </section>
-
-<!-- APPT STRIP -->
-<div class="appt-strip">
-  <div class="appt-inner">
-    <div class="appt-left">
-      <div class="appt-icon">📅</div>
-      <div class="appt-text">
-        <div class="t1">Want to Visit?</div>
-        <div class="t2">We're open by appointment only — pick a time that works for you</div>
-      </div>
-    </div>
-    <a class="btn-yellow" href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ1NxOof0CcPsCe84d2Kl4FPX_wUFETI7vLlNyKa82Wb2OHweFX_lSjFSfnoVMm045VDZkAJq29M" target="_blank">
-      Book Appointment →
-    </a>
-  </div>
-</div>
 
 <!-- ABOUT -->
 <div class="about" id="about">
