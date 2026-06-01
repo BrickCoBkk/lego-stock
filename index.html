@@ -867,9 +867,10 @@
 </div>
 
 <script>
-  const SHEET_ID   = '16nuvshe86YG9ahtfPUA6fjilMXxjupjTgODvjzZEves';
-  const CSV_DIRECT = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0`;
-  const CSV_PROXY  = `https://corsproxy.io/?url=${encodeURIComponent(CSV_DIRECT)}`;
+  // Direct published CSV — no proxy needed, fastest & most stable
+  const CSV_URLS = [
+    'https://docs.google.com/spreadsheets/d/e/2PACX-1vTxglDLlUBmQRw0z35QA_dtuZz-HKHIs5EWvConUo-36kdpIpSLxludRpilN6mo_1T9vReRqUJm0WZM/pubhtml?gid=0&single=true&output=csv',
+  ];
 
   let allProducts=[], activeFilter='all', searchQuery='';
 
@@ -891,12 +892,10 @@
   }
 
   function getImgSources(n){
-    const e=encodeURIComponent(n);
+    // Brickset is fastest & most reliable — no CORS issues for <img> tags
     return[
       `https://images.brickset.com/sets/images/${n}-1.jpg`,
       `https://images.brickset.com/sets/small/${n}-1.jpg`,
-      `https://cdn.rebrickable.com/media/sets/${n}-1.jpg`,
-      `https://corsproxy.io/?url=https%3A%2F%2Fcdn.rebrickable.com%2Fmedia%2Fsets%2F${e}-1.jpg`,
     ];
   }
 
@@ -981,19 +980,19 @@
     grid.innerHTML=filtered.map((p,i)=>renderCard(p,i)).join('');
   }
 
+  async function tryFetch(url){
+    const res = await fetch(url, {redirect:'follow', signal:AbortSignal.timeout(8000)});
+    if(!res.ok) throw new Error('bad status');
+    const text = await res.text();
+    if(!text.includes(',')) throw new Error('not csv');
+    return text;
+  }
+
   async function loadData(){
     try{
-      let res,text;
-      try{
-        res=await fetch(CSV_DIRECT,{redirect:'follow'});
-        if(!res.ok) throw new Error();
-        text=await res.text();
-        if(!text.includes(',')) throw new Error();
-      }catch{
-        res=await fetch(CSV_PROXY);
-        text=await res.text();
-      }
-      allProducts=parseCSV(text);
+      // Race all URLs — fastest valid response wins
+      const text = await Promise.any(CSV_URLS.map(u => tryFetch(u)));
+      allProducts = parseCSV(text);
       render();
     }catch(e){
       document.getElementById('productGrid').innerHTML='<div class="state-msg"><h3>Failed to load</h3><p>Please refresh the page.</p></div>';
